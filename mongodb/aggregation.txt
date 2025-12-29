@@ -1,0 +1,107 @@
+1. Group users by Location and count how many users are in each location.
+     db.employees.aggregate([{$group: {_id: '$place', count: {$sum: 1}}}]);
+
+2. Group users by Location and list all user names in each location.
+     db.employees.aggregate([{$group: {_id: '$place', names: {$push: '$name'}}}])
+
+3. Group users by Location and get the maximum age from each location.
+     db.employees.aggregate([{$group: {_id: '$place', max_age: {$max: '$age'}}}])
+
+4. Group users by Location and calculate the total sum of ages.
+     db.employees.aggregate([{$group: {_id: '$place', sum: {$sum: '$age'}}}])
+
+5. Group users by hobbies (each hobby separately) and count how many users share that hobby.
+     db.employees.aggregate([{$unwind: "$hobbies"}, {$group: {_id: '$hobbies', count: {$sum: 1}}}])
+
+6. Find the documents that the last letter of the name 'n'
+     db.employees.find({name: {$regex: 'n$'}})
+
+7. Find the documents that the letter 'n' have
+     db.employees.find({name: {$regex: 'n'}})
+    
+8. Merge example
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$item",                // group by item name
+      totalQuantity: { $sum: "$quantity" }  // sum quantity
+    }
+  },
+  {
+    $merge: {
+      into: "sales_summary",   // target collection
+      on: "_id",               // use _id (item name) to match existing docs
+      whenMatched: "merge",    // merge with existing doc if item exists
+      whenNotMatched: "insert" // insert new doc if item not found
+    }
+  }
+])
+
+9. replaceRoot example
+db.users.aggregate([
+  { $replaceRoot: { newRoot: "$hobbies" } }
+])
+
+10. Creating a capped collection
+
+db.createCollection('cappedCollection', capped: true, size: 2000, max: 100)
+
+
+11. Finding the matched elements from the object
+
+employees> db.employees.find({"address.city": 'Phoenix'})
+[
+  {
+    _id: 5,
+    name: 'Eva Green',
+    age: 15,
+    grade: '9th',
+    address: { city: 'Phoenix', zip: '85001' },
+    attendance: 90,
+    enrolled: true
+  }
+]
+employees>
+
+
+12. Bulkwrite example
+      db.products.bulkWrite([
+  // 1️⃣ Insert a new product
+  {
+    insertOne: {
+      document: { _id: 4, name: "Monitor", price: 12000, stock: 10 }
+    }
+  },
+
+  // 2️⃣ Update the price of one product
+  {
+    updateOne: {
+      filter: { name: "Mouse" },
+      update: { $set: { price: 1800 } }
+    }
+  },
+
+  // 3️⃣ Increase stock for multiple products
+  {
+    updateMany: {
+      filter: { stock: { $lt: 25 } },
+      update: { $inc: { stock: 5 } }
+    }
+  },
+
+  // 4️⃣ Replace a product completely
+  {
+    replaceOne: {
+      filter: { name: "Keyboard" },
+      replacement: { name: "Mechanical Keyboard", price: 4500, stock: 15 }
+    }
+  },
+
+  // 5️⃣ Delete a product
+  {
+    deleteOne: {
+      filter: { name: "Laptop" }
+    }
+  }
+]);
+  
