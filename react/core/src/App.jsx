@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import "./App.css";
 import Home from "./home";
 import Counter from "./counter";
@@ -13,9 +13,10 @@ import UseToggle from "./customHook/useToggle";
 import UseHoc from "./higherOrderComponent/useHoc";
 import UseCallback from "./hooks/useCallback";
 import RedCounter from "./redux/counter";
+import ParentCom from "./childToParent/parent";
+import Products from "./pages/products";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -33,7 +34,8 @@ function App() {
           <Route path="/hoc" element={<UseHoc/>}/>
           <Route path="/useCallback" element={<UseCallback/>}/>
           <Route path="/redCounter" element={<RedCounter/>}/>
-
+          <Route path="/paren" element={<ParentCom/>}/>
+          <Route path="/products" element={<Products/>}/>
         </Routes>
       </BrowserRouter>
     </>

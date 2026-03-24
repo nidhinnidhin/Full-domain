@@ -16,7 +16,7 @@ class Graph{
         this.adList[v2].add(v1);
     }
 
-    removeEdge(v1, v2){+
+    removeEdge(v1, v2){
         this.adList[v1].delete(v2);
         this.adList[v2].delete(v1)
     }

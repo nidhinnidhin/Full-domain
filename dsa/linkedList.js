@@ -28,7 +28,7 @@ class LinkedList{
         newNode.next = this.head;
         this.head = newNode;
     }
-    
+          ew
     reverse(){
         let current = this.head;
         let prev = null;

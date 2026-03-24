@@ -3,7 +3,7 @@ function* printTem(){
         yield i
     }
 }
-
+sdfsdfasdf 
 for(let elem of printTem()){
     console.log(elem)
 }
